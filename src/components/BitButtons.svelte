@@ -1,36 +1,28 @@
 <script>
   export let bits = [];
   export let toggleBit = () => {};
-  export const binaryString = '00000000.00000000.00000000';
 
   function toggleOctet(octetIndex) {
-      const startIndex = octetIndex * 8;
-      const endIndex = startIndex + 8;
+    const startIndex = octetIndex * 8;
+    const endIndex = startIndex + 8;
 
-      for (let i = startIndex; i < endIndex; i++) {
-          toggleBit(i);
-      }
+    for (let i = startIndex; i < endIndex; i++) {
+      toggleBit(i);
+    }
   }
 </script>
-
-<div class="binary-display">
-  {#each Array(3) as _, octetIndex}
-    <div class="octet-binary">
-      {#each bits.slice(octetIndex * 8, (octetIndex + 1) * 8) as bit, i}
-        <span>{bit}</span>
-      {/each}
-    </div>
-
-    <!-- Divider after every octet, but not after the last one -->
-    {#if octetIndex < 2}
-      <div class="divider"></div>
-    {/if}
-  {/each}
-</div>
 
 <div class="octets">
   {#each Array(3) as _, octetIndex}
     <div class="octet-group">
+      <!-- Binary Display for the current octet -->
+      <div class="octet-binary">
+        {#each bits.slice(octetIndex * 8, (octetIndex + 1) * 8) as bit, i}
+          <span class="binary-bit">{bit}</span>
+        {/each}
+      </div>
+      
+      <!-- Bit buttons for the current octet -->
       <div class="buttons">
         {#each bits.slice(octetIndex * 8, (octetIndex + 1) * 8) as bit, i}
           <div
@@ -56,20 +48,6 @@
 </div>
 
 <style>
-  .binary-display {
-    display: flex;
-    justify-content: center;
-    gap: 28px; /* Adjust the spacing to match the bit buttons */
-    margin-bottom: 10px;
-    font-size: 18px;
-    color: #FFFFFF;
-  }
-
-  .octet-binary {
-    display: flex;
-    gap: 10px;
-  }
-
   .octets {
     display: flex;
     justify-content: center;
@@ -81,6 +59,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .octet-binary {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+    justify-content: center; /* Center the binary digits */
+  }
+
+  .binary-bit {
+    width: 30px; /* Match button width */
+    text-align: center;
+    font-size: 18px;
+    color: #FFFFFF;
   }
 
   .buttons {
